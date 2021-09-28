@@ -52,7 +52,7 @@ text_font = pygame.font.Font('comic.ttf',25)
 after_text = pygame.font.Font('comic.ttf',25)
 score = 0
 score_rect = text_font.render(f'Score = {score}',True,'Green')
-after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',False,'Blue')
+after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',True,'Blue')
 game_status = True
 blocks = pygame.image.load('1.jpg').convert_alpha()
 def create_blocks(count,intial_x,intial_y,x_in,y_in):
@@ -152,6 +152,8 @@ while exit_condition:                        #comes out of the program when esca
                 screen.blit(blocks,x)
                 if head_rect.colliderect(x):
                     game_status = False
+                    display_condition = False
+                    condition = random.randint(50,80)
                 elif food_rect.colliderect(x):
                     display_condition = False
                     condition = counter
@@ -165,7 +167,7 @@ while exit_condition:                        #comes out of the program when esca
             display_condition = False
             condition = condition + random.randint(10,25)
             score = score + 1
-            score_rect = text_font.render(f'Score = {score}',False,'Green')
+            score_rect = text_font.render(f'Score = {score}',True,'Green')
             pygame.draw.rect(screen, blue, rect_screen)
             screen.blit(text_rect,(30,0))
             screen.blit(score_rect,(400,45))
@@ -246,7 +248,7 @@ while exit_condition:                        #comes out of the program when esca
         cv.imshow("Frame",frame)
         screen.fill(screen_color)
         pygame.draw.rect(screen, blue, rect_screen)
-        score_rect = text_font.render(f'Score = {score}',False,'Green') 
+        score_rect = text_font.render(f'Score = {score}',True,'Green') 
         screen.blit(text_rect,(30,0))
         screen.blit(score_rect,(400,45))
         screen.blit(after_text_rect,(50,300))
@@ -260,17 +262,14 @@ while exit_condition:                        #comes out of the program when esca
                 elif(events.key == pygame.K_SPACE):
                     game_status = True
                     score = 0
-                    score_rect = text_font.render(f'Score = {score}',False,'Green')
+                    score_rect = text_font.render(f'Score = {score}',True,'Green')
         if(key == 27):
             exit_condition = False
         elif key == 32:
             game_status = True
             score = 0
-            score_rect = text_font.render(f'Score = {score}',False,'Green')
+            score_rect = text_font.render(f'Score = {score}',True,'Green')
         
-        
-
-
 #releasing the capture and destroying all the windows
 cap.release()
 cv.destroyAllWindows()
