@@ -20,71 +20,122 @@ upper_red = np.array([uh, us, uv])
 kernel = np.ones((3, 3), np.uint8)      #this is the kernel for passing while "closing" and dilation
 ncx = ncy=  2300000                     #assigning these value so that there is no condition check everytime for 1st and2nd iteration
 key = 0                                 #condition for entering into the loop
+font = cv.FONT_HERSHEY_SIMPLEX
+
 
 # Code for Snake
+width = 600
+height = 680
 pygame.init()
 clock = pygame.time.Clock()
-start_pos_x = 330
-start_pos_y = 240
-screen = pygame.display.set_mode((600,700))
+start_pos_x = 300
+start_pos_y = 390
+screen = pygame.display.set_mode((width,height))
 head = pygame.image.load('3.jpg').convert_alpha()
-head_rect = head.get_rect(center = (320,240))
+head_rect = head.get_rect(center = (start_pos_x,start_pos_y))
 body = pygame.image.load('2.jpg').convert_alpha()
 body_rect = body.get_rect(center = (335,240))
-food = pygame.image.load('1.jpg').convert_alpha()
+food = pygame.image.load('11.jpg').convert_alpha()
 food_rect = food.get_rect(center = (300,300))
 position = [(start_pos_x,start_pos_y)]
 rectangles = [head_rect]
 movement = previous_movement = 33
 counter = 0
-condition = random.randint(1,50)
+condition = random.randint(50,80)
 display_condition = False
 exit_condition = True
 grab_time = random.randint(150, 555)
-rect_screen = pygame.Rect(0, 0, 600, 100)
+rect_screen = pygame.Rect(0, 0, 600, 80)
 text_font = pygame.font.Font('comic.ttf',50)
-text_rect = text_font.render('Snake Game',False,'Green')
+text_rect = text_font.render('Snake Game',True,'Green')
 text_font = pygame.font.Font('comic.ttf',25)
+after_text = pygame.font.Font('comic.ttf',25)
 score = 0
-score_rect = text_font.render(f'Score = {score}',False,'Green')
-game_status = False
+score_rect = text_font.render(f'Score = {score}',True,'Green')
+after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',False,'Blue')
+game_status = True
+blocks = pygame.image.load('1.jpg').convert_alpha()
+def create_blocks(count,intial_x,intial_y,x_in,y_in):
+    tempblock_rect = blocks.get_rect(center = (intial_x,intial_y))
+    tempblock_rectangles = [tempblock_rect]
+    for i in range(count):
+        tempblock_rectangles.append(blocks.get_rect(center = (tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)),)))
+    return tempblock_rectangles
+block_rectangles = [create_blocks(29,107,87,14,0)]
+block_rectangles.append(create_blocks(29,107,673,14,0))
+block_rectangles.append(create_blocks(29,593,187,0,14))
+block_rectangles.append(create_blocks(29,7,187,0,14))
+block_rectangles.append(create_blocks(7,402,207,14,0))
+block_rectangles.append(create_blocks(7,100,573,14,0))
+block_rectangles.append(create_blocks(6,500,221,0,14))
+block_rectangles.append(create_blocks(6,100,559,0,-14))
+
+# def check_collision(blocks_details,head_rectangle):
+#     for i in blocks_details:
+#         for j in i:
+#             if head_rectangle.colliderect(j):
+                
+# block_rect = blocks.get_rect(center = (107,87))
+# block_rectangles = [[blocks.get_rect(center = (107,87))]]
+# for i in range(29):
+#     block_rectangles[0].append(blocks.get_rect(center = (block_rect.x + 7 + (14 * (i + 1)),block_rect.y + 7 )))
+
+# block_rect = blocks.get_rect(center = (107,673))
+# block_rectangles.append([blocks.get_rect(center = (107,673))])
+# for i in range(29):
+#     block_rectangles[1].append(blocks.get_rect(center = (block_rect.x + 7  + (14 * (i + 1)),block_rect.y + 7 )))
+
+# block_rect = blocks.get_rect(center = (593,187))
+# block_rectangles.append([blocks.get_rect(center = (593,187))])
+# for i in range(29):
+#     block_rectangles[2].append(blocks.get_rect(center = (block_rect.x + 7 ,block_rect.y + 7  + (14 * (i + 1)))))
+
+# block_rect = blocks.get_rect(center = (7,187))
+# block_rectangles.append([blocks.get_rect(center = (7,187))])
+# for i in range(29):
+#     block_rectangles[3].append(blocks.get_rect(center = (block_rect.x + 7 ,block_rect.y + 7  + (14 * (i + 1)))))
+
+
+
+screen_color = (255,255,255)
+blue = (0,0,255)
 while exit_condition:                        #comes out of the program when escape is pressed
+    
     if game_status == True:
-        screen.fill((255,255,255))
-        pygame.draw.rect(screen, (0,0,255), rect_screen)
+        
+        
+        screen.fill(screen_color)
+        pygame.draw.rect(screen, blue, rect_screen)
         screen.blit(text_rect,(30,0))
-        screen.blit(score_rect,(400,50))
-        pygame.display.flip()
-        # displaying food until its either eaten or the allowed time is finished
-        if display_condition and counter < grab_time:
-            screen.blit(food, food_rect)
+        screen.blit(score_rect,(400,45))
+               
+        
         # Updating the postion array of the body
         length = len(position)
         limit = length - 1
-        if(limit >= 1):
+        if(limit > 0):
             for i in range(limit):
                 position[limit - i] = position[limit - i - 1]
         # Updating the postion of the head
         
         if movement == 0:
-            position[0] = (position[0][0] + 15 , position[0][1])
+            position[0] = (position[0][0] + 14 , position[0][1])
         elif movement == 1:
-            position[0] = (position[0][0], position[0][1] + 15)
+            position[0] = (position[0][0], position[0][1] + 14)
         elif movement == 2:
-            position[0] = (position[0][0] - 15 , position[0][1])
+            position[0] = (position[0][0] - 14 , position[0][1])
         elif movement == 3:
-            position[0] = (position[0][0], position[0][1] - 15)
+            position[0] = (position[0][0], position[0][1] - 14)
         
-        if( position[0][0] > 600):
-            position[0] = (7 , position[0][1])
+        if( position[0][0] > width):
+            position[0] = (14 , position[0][1])
         elif position[0][0] < 0:
-            position[0] = (593 , position[0][1])
-        elif position[0][1] > 700:
-            position[0] = (position[0][0] , 107)
-        elif position[0][1] < 100:
-            position[0] = (position[0][0] , 693)
-        else:
-            pass
+            position[0] = (width - 14 , position[0][1])
+        elif position[0][1] > height:
+            position[0] = (position[0][0] , 94)
+        elif position[0][1] < 80:
+            position[0] = (position[0][0] , height-14)
+        
         for i in range(length):
             rectangles[i].x = position[i][0]
             rectangles[i].y = position[i][1]
@@ -96,23 +147,33 @@ while exit_condition:                        #comes out of the program when esca
                 screen.blit(head,rect)
             else:
                 screen.blit(body,rect)
-        
+        for B in block_rectangles:
+            for x in B:
+                screen.blit(blocks,x)
+                if head_rect.colliderect(x):
+                    game_status = False
+                elif food_rect.colliderect(x):
+                    display_condition = False
+                    condition = counter
+        # displaying food until its either eaten or the allowed time is finished
+        if display_condition and counter < grab_time:
+            screen.blit(food, food_rect)
             
         if display_condition and counter < grab_time and head_rect.colliderect(food_rect):
             position.append(position[length-1])
             rectangles.append(body.get_rect(center = position[length - 1]))
             display_condition = False
-            condition = condition + random.randint(1,25)
+            condition = condition + random.randint(10,25)
             score = score + 1
             score_rect = text_font.render(f'Score = {score}',False,'Green')
-            pygame.draw.rect(screen, (0,0,255), rect_screen)
+            pygame.draw.rect(screen, blue, rect_screen)
             screen.blit(text_rect,(30,0))
-            screen.blit(score_rect,(400,50))
+            screen.blit(score_rect,(400,45))
             
         # Food Generation
         if counter == condition:
-            food_rect.x = random.randint(1,600)
-            food_rect.y = random.randint(100,700)
+            food_rect.x = random.randint(15,width)
+            food_rect.y = random.randint(115, height)
             condition = random.randint(50,80)
             counter = 0
             grab_time = random.randint(150, 185)
@@ -120,18 +181,19 @@ while exit_condition:                        #comes out of the program when esca
         for i in range (3,length):
             if head_rect.colliderect(rectangles[i]):
                 game_status = False
-        
+                
+        pygame.display.flip()
         pygame.display.update()
         counter = counter + 1
         _, fram = cap.read()                #reading the camera
         frame = cv.flip(fram, 1)            #flipping the camera along the vertical axis
         hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)  #converting frame from bgr to hsv
         mask = cv.inRange(hsv, lower_red, upper_red)    #hsv thresholding
-        if (mask[:] == 255).any():                  #if there is object in the mask at least 1 white spot will be there only then proceed to find contours
-            #applying closing operation on mask to remove noise from the image
-            closing = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel) 
-            #dilation is done to remove some of the dark spot inside the mask
-            dilation_after_closing = cv.dilate(closing,kernel,iterations = 3)
+        #applying closing operation on mask to remove noise from the image
+        closing = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel) 
+        #dilation is done to remove some of the dark spot inside the mask
+        dilation_after_closing = cv.dilate(closing,kernel,iterations = 3)
+        if (dilation_after_closing[:] == 255).any():                  #if there is object in the mask at least 1 white spot will be there only then proceed to find contours
             contours, _ = cv.findContours(dilation_after_closing, 1, 2) #detecting contours
             areas = [cv.contourArea(c) for c in contours]   #finding areas of all the contourand putting them in a list
             #finding the index of the largest contour in the above list
@@ -160,21 +222,52 @@ while exit_condition:                        #comes out of the program when esca
                 if(abs(previous_movement - movement) == 2):
                     movement = previous_movement
         key = cv.waitKey(1)             #waiting for one millisecond for some input from the user
-        if key == 97:                   #if the user gave 'a' as the input the the canvas is cleared(optional)
-            img = np.copy(cp)
+        
+        cv.line(frame,(80,0),(560,480),(0,0,0),5)
+        cv.line(frame,(80,480),(560,0),(0,0,0),5)
+        cv.putText(frame,'UP',(280,50), font, 1,(255,255,255),2,cv.LINE_AA)
+        cv.putText(frame,'DOWN',(280,400), font, 1,(255,255,255),2,cv.LINE_AA)
+        cv.putText(frame,'RIGHT',(420,240), font, 1,(255,255,255),2,cv.LINE_AA)
+        cv.putText(frame,'LEFT',(100,240), font, 1,(255,255,255),2,cv.LINE_AA)
+        cv.imshow("Frame",frame)
+        if game_status == False:
+            position = [(start_pos_x,start_pos_y)]
+            rectangles = [head_rect]
         for events in pygame.event.get():
             if(events.type == pygame.KEYDOWN):
                 if(events.key == pygame.K_ESCAPE):
                     key = 27
         if(key == 27):
             exit_condition = False
-        cv.line(frame,(80,0),(560,480),(0,0,0),5)
-        cv.line(frame,(80,480),(560,0),(0,0,0),5)
-
-
-        cv.imshow("Frame",frame)
+        clock.tick(30)
     else:
-        pass
+        _, fram = cap.read()                #reading the camera
+        frame = cv.flip(fram, 1) 
+        cv.imshow("Frame",frame)
+        screen.fill(screen_color)
+        pygame.draw.rect(screen, blue, rect_screen)
+        score_rect = text_font.render(f'Score = {score}',False,'Green') 
+        screen.blit(text_rect,(30,0))
+        screen.blit(score_rect,(400,45))
+        screen.blit(after_text_rect,(50,300))
+        pygame.display.flip()
+        pygame.display.update()
+        key = cv.waitKey(1)
+        for events in pygame.event.get():
+            if(events.type == pygame.KEYDOWN):
+                if(events.key == pygame.K_ESCAPE):
+                    key = 27
+                elif(events.key == pygame.K_SPACE):
+                    game_status = True
+                    score = 0
+                    score_rect = text_font.render(f'Score = {score}',False,'Green')
+        if(key == 27):
+            exit_condition = False
+        elif key == 32:
+            game_status = True
+            score = 0
+            score_rect = text_font.render(f'Score = {score}',False,'Green')
+        
         
 
 
