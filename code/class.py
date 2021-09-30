@@ -347,15 +347,6 @@ while run_condition:
                     game_status = True
                     score = 0
                     score_rect = text_font.render(f'Score = {score}',True,'Green')
-
-        
-
-# def collision_food():
-#         food.collided()
-#         if Body.length == 0:
-#             Body.length += 1
-#         else:
-#             body_group.add(Body())
-#             Body.length += 1
+                    
 cap.release()
 cv.destroyAllWindows()
