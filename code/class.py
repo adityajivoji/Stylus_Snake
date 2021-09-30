@@ -164,7 +164,6 @@ food = Food()
 food_group = pygame.sprite.GroupSingle()
 food_group.add(food)
 
-
 snake = Snake('3.jpg')
 snake_group = pygame.sprite.GroupSingle()
 snake_group.add(snake)
@@ -176,8 +175,6 @@ title = text_font_50.render('Snake Game',True,'Green')
 text_font_25 = pygame.font.Font('comic.ttf',25)
 score_display = text_font_25.render(f'Score = {score}',True,'Green')
 restart_text = text_font_25.render('Press SpaceBar to start or ESC to exit',True,'Blue')
-
-
 
 create_blocks_position(29,107,87,14,0)
 create_blocks_position(29,107,673,14,0)
@@ -204,8 +201,6 @@ white = (255,255,255)
 start_time = 0
 time_to_chase = random.randint(15,20)
 
-
-
     
 # Condition for the loop to run
 run_condition = True
@@ -221,7 +216,6 @@ while run_condition:
         screen.blit(score_display,(400,45))
         pygame.display.flip()
         pygame.display.update()
-        
         
         #food_group.update()
         curr_time = int(pygame.time.get_ticks() / 1000)
