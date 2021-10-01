@@ -4,6 +4,8 @@ import numpy as np
 import pygame
 import random
 
+from pygame.display import set_caption
+
 img = np.zeros((480, 640, 3), np.uint8) #creating an image which is the drawing space
 cv.bitwise_not(img,img)                 #turning all the zeros to 1s so that drawing pad is white(optional)
 cp = np.copy(img)                       #copying this image to clear the drawing canvas(optional)
@@ -27,6 +29,7 @@ font = cv.FONT_HERSHEY_SIMPLEX
 width = 600
 height = 680
 pygame.init()
+set_caption("Stylus Snake")
 clock = pygame.time.Clock()
 start_pos_x = 300
 start_pos_y = 390
@@ -52,14 +55,15 @@ text_font = pygame.font.Font('comic.ttf',25)
 after_text = pygame.font.Font('comic.ttf',25)
 score = 0
 score_rect = text_font.render(f'Score = {score}',True,'Green')
-after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',True,'Blue')
-game_status = True
+after_text_rect = after_text.render('Press SpaceBar to start or ESC to exit',True,'Blue')
+game_status = False
 blocks = pygame.image.load('1.jpg').convert_alpha()
 def create_blocks(count,intial_x,intial_y,x_in,y_in):
     tempblock_rect = blocks.get_rect(center = (intial_x,intial_y))
     tempblock_rectangles = [tempblock_rect]
     for i in range(count):
-        tempblock_rectangles.append(blocks.get_rect(center = (tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)),)))
+        tempblock_rectangles.append(blocks.get_rect(center = (tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)))))
+        print(tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)))
     return tempblock_rectangles
 block_rectangles = [create_blocks(29,107,87,14,0)]
 block_rectangles.append(create_blocks(29,107,673,14,0))
@@ -69,32 +73,6 @@ block_rectangles.append(create_blocks(7,402,207,14,0))
 block_rectangles.append(create_blocks(7,100,573,14,0))
 block_rectangles.append(create_blocks(6,500,221,0,14))
 block_rectangles.append(create_blocks(6,100,559,0,-14))
-
-# def check_collision(blocks_details,head_rectangle):
-#     for i in blocks_details:
-#         for j in i:
-#             if head_rectangle.colliderect(j):
-                
-# block_rect = blocks.get_rect(center = (107,87))
-# block_rectangles = [[blocks.get_rect(center = (107,87))]]
-# for i in range(29):
-#     block_rectangles[0].append(blocks.get_rect(center = (block_rect.x + 7 + (14 * (i + 1)),block_rect.y + 7 )))
-
-# block_rect = blocks.get_rect(center = (107,673))
-# block_rectangles.append([blocks.get_rect(center = (107,673))])
-# for i in range(29):
-#     block_rectangles[1].append(blocks.get_rect(center = (block_rect.x + 7  + (14 * (i + 1)),block_rect.y + 7 )))
-
-# block_rect = blocks.get_rect(center = (593,187))
-# block_rectangles.append([blocks.get_rect(center = (593,187))])
-# for i in range(29):
-#     block_rectangles[2].append(blocks.get_rect(center = (block_rect.x + 7 ,block_rect.y + 7  + (14 * (i + 1)))))
-
-# block_rect = blocks.get_rect(center = (7,187))
-# block_rectangles.append([blocks.get_rect(center = (7,187))])
-# for i in range(29):
-#     block_rectangles[3].append(blocks.get_rect(center = (block_rect.x + 7 ,block_rect.y + 7  + (14 * (i + 1)))))
-
 
 
 screen_color = (255,255,255)
@@ -120,21 +98,21 @@ while exit_condition:                        #comes out of the program when esca
         
         if movement == 0:
             position[0] = (position[0][0] + 14 , position[0][1])
+            if( position[0][0] > width):
+                position[0] = (14 , position[0][1])
         elif movement == 1:
             position[0] = (position[0][0], position[0][1] + 14)
+            if position[0][1] > height:
+                position[0] = (position[0][0] , 94)
         elif movement == 2:
             position[0] = (position[0][0] - 14 , position[0][1])
+            if position[0][0] < 0:
+                position[0] = (width - 14 , position[0][1])
         elif movement == 3:
             position[0] = (position[0][0], position[0][1] - 14)
+            if position[0][1] < 80:
+                position[0] = (position[0][0] , height-14)
         
-        if( position[0][0] > width):
-            position[0] = (14 , position[0][1])
-        elif position[0][0] < 0:
-            position[0] = (width - 14 , position[0][1])
-        elif position[0][1] > height:
-            position[0] = (position[0][0] , 94)
-        elif position[0][1] < 80:
-            position[0] = (position[0][0] , height-14)
         
         for i in range(length):
             rectangles[i].x = position[i][0]
@@ -147,6 +125,8 @@ while exit_condition:                        #comes out of the program when esca
                 screen.blit(head,rect)
             else:
                 screen.blit(body,rect)
+
+        # Walll
         for B in block_rectangles:
             for x in B:
                 screen.blit(blocks,x)
@@ -231,7 +211,7 @@ while exit_condition:                        #comes out of the program when esca
         cv.putText(frame,'DOWN',(280,400), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'RIGHT',(420,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'LEFT',(100,240), font, 1,(255,255,255),2,cv.LINE_AA)
-        cv.imshow("Frame",frame)
+        cv.imshow("Wireless Joystick!",frame)
         if game_status == False:
             position = [(start_pos_x,start_pos_y)]
             rectangles = [head_rect]
@@ -241,11 +221,11 @@ while exit_condition:                        #comes out of the program when esca
                     key = 27
         if(key == 27):
             exit_condition = False
-        clock.tick(30)
+        clock.tick(100)
     else:
         _, fram = cap.read()                #reading the camera
         frame = cv.flip(fram, 1) 
-        cv.imshow("Frame",frame)
+        cv.imshow("Wireless Joystick!",frame)
         screen.fill(screen_color)
         pygame.draw.rect(screen, blue, rect_screen)
         score_rect = text_font.render(f'Score = {score}',True,'Green') 
@@ -263,12 +243,16 @@ while exit_condition:                        #comes out of the program when esca
                     game_status = True
                     score = 0
                     score_rect = text_font.render(f'Score = {score}',True,'Green')
+                    after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',True,'Blue')
+
         if(key == 27):
             exit_condition = False
         elif key == 32:
             game_status = True
             score = 0
             score_rect = text_font.render(f'Score = {score}',True,'Green')
+            after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',True,'Blue')
+
         
 #releasing the capture and destroying all the windows
 cap.release()
