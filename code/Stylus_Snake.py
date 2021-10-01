@@ -26,37 +26,55 @@ font = cv.FONT_HERSHEY_SIMPLEX
 
 
 # Code for Snake
-width = 600
-height = 680
+
+# Screen Width and screen_height
+screen_width = 600
+screen_height = 680
+
+# initializing pygame
 pygame.init()
 set_caption("Stylus Snake")
 clock = pygame.time.Clock()
+# Starting position of snake
 start_pos_x = 300
 start_pos_y = 390
-screen = pygame.display.set_mode((width,height))
+# getting screen loading images and getting rect
+screen = pygame.display.set_mode((screen_width,screen_height))
 head = pygame.image.load('3.jpg').convert_alpha()
 head_rect = head.get_rect(center = (start_pos_x,start_pos_y))
 body = pygame.image.load('2.jpg').convert_alpha()
 body_rect = body.get_rect(center = (335,240))
 food = pygame.image.load('11.jpg').convert_alpha()
 food_rect = food.get_rect(center = (300,300))
+
 position = [(start_pos_x,start_pos_y)]
-rectangles = [head_rect]
+# rect's for snake body
+snake_rectangles = [head_rect]
+# giving arbitrary values for movements, doesn't move if input isn't given
 movement = previous_movement = 33
+# This is used to generate food after some number of loops
 counter = 0
+# condition for food to generate
 condition = random.randint(50,80)
+# Food display condition set to false
 display_condition = False
-exit_condition = True
+# Condition to run this loop
+run_condition = True
+# time for snake to chase the food
 grab_time = random.randint(150, 555)
+# these are initiated to display information
 rect_screen = pygame.Rect(0, 0, 600, 80)
 text_font = pygame.font.Font('comic.ttf',50)
 text_rect = text_font.render('Snake Game',True,'Green')
 text_font = pygame.font.Font('comic.ttf',25)
 after_text = pygame.font.Font('comic.ttf',25)
+# Score set to Zero
 score = 0
 score_rect = text_font.render(f'Score = {score}',True,'Green')
 after_text_rect = after_text.render('Press SpaceBar to start or ESC to exit',True,'Blue')
+# Game status set to False turn True when spacebar is pressed
 game_status = False
+# Creating walls
 blocks = pygame.image.load('1.jpg').convert_alpha()
 def create_blocks(count,intial_x,intial_y,x_in,y_in):
     tempblock_rect = blocks.get_rect(center = (intial_x,intial_y))
@@ -74,19 +92,18 @@ block_rectangles.append(create_blocks(7,100,573,14,0))
 block_rectangles.append(create_blocks(6,500,221,0,14))
 block_rectangles.append(create_blocks(6,100,559,0,-14))
 
-
+# Screen Condition
 screen_color = (255,255,255)
-blue = (0,0,255)
-while exit_condition:                        #comes out of the program when escape is pressed
+Blue = (0,0,255)
+
+while run_condition:                        #comes out of the program when escape is pressed
     
     if game_status == True:
-        
-        
+        # screen
         screen.fill(screen_color)
-        pygame.draw.rect(screen, blue, rect_screen)
+        pygame.draw.rect(screen, Blue, rect_screen)
         screen.blit(text_rect,(30,0))
         screen.blit(score_rect,(400,45))
-               
         
         # Updating the postion array of the body
         length = len(position)
@@ -94,39 +111,37 @@ while exit_condition:                        #comes out of the program when esca
         if(limit > 0):
             for i in range(limit):
                 position[limit - i] = position[limit - i - 1]
-        # Updating the postion of the head
         
+        # Updating the postion of the head
         if movement == 0:
             position[0] = (position[0][0] + 14 , position[0][1])
-            if( position[0][0] > width):
+            if( position[0][0] > screen_width):
                 position[0] = (14 , position[0][1])
         elif movement == 1:
             position[0] = (position[0][0], position[0][1] + 14)
-            if position[0][1] > height:
+            if position[0][1] > screen_height:
                 position[0] = (position[0][0] , 94)
         elif movement == 2:
             position[0] = (position[0][0] - 14 , position[0][1])
             if position[0][0] < 0:
-                position[0] = (width - 14 , position[0][1])
+                position[0] = (screen_width - 14 , position[0][1])
         elif movement == 3:
             position[0] = (position[0][0], position[0][1] - 14)
             if position[0][1] < 80:
-                position[0] = (position[0][0] , height-14)
+                position[0] = (position[0][0] , screen_height-14)
         
-        
+        # setting the position to the rectangles
         for i in range(length):
-            rectangles[i].x = position[i][0]
-            rectangles[i].y = position[i][1]
+            snake_rectangles[i].center = (position[i][0],position[i][1])
         
-        
-        
-        for rect in rectangles:
+        # Displaying snake
+        for rect in snake_rectangles:
             if(rect == head_rect):
                 screen.blit(head,rect)
             else:
                 screen.blit(body,rect)
 
-        # Walll
+        # displaying Wallls and checking if the snake head collided with walls or if the generated food is on the walls
         for B in block_rectangles:
             for x in B:
                 screen.blit(blocks,x)
@@ -137,33 +152,38 @@ while exit_condition:                        #comes out of the program when esca
                 elif food_rect.colliderect(x):
                     display_condition = False
                     condition = counter
+        
         # displaying food until its either eaten or the allowed time is finished
         if display_condition and counter < grab_time:
             screen.blit(food, food_rect)
-            
+        
+        # If snake head collides with the food
+        # Display condition is a condition here because if not set sometimes two collisions happen
         if display_condition and counter < grab_time and head_rect.colliderect(food_rect):
             position.append(position[length-1])
-            rectangles.append(body.get_rect(center = position[length - 1]))
+            snake_rectangles.append(body.get_rect(center = position[length - 1]))
             display_condition = False
             condition = condition + random.randint(10,25)
             score = score + 1
             score_rect = text_font.render(f'Score = {score}',True,'Green')
-            pygame.draw.rect(screen, blue, rect_screen)
+            pygame.draw.rect(screen, Blue, rect_screen)
             screen.blit(text_rect,(30,0))
             screen.blit(score_rect,(400,45))
             
         # Food Generation
         if counter == condition:
-            food_rect.x = random.randint(15,width)
-            food_rect.y = random.randint(115, height)
+            food_rect.x = random.randint(15,screen_width)
+            food_rect.y = random.randint(115, screen_height)
             condition = random.randint(50,80)
             counter = 0
             grab_time = random.randint(150, 185)
             display_condition = True
+        
+        # Checing if the snake collides with its body
         for i in range (3,length):
-            if head_rect.colliderect(rectangles[i]):
+            if head_rect.colliderect(snake_rectangles[i]):
                 game_status = False
-                
+        # Updating all drawing
         pygame.display.flip()
         pygame.display.update()
         counter = counter + 1
@@ -193,18 +213,20 @@ while exit_condition:                        #comes out of the program when esca
                 previous_movement = movement
                 if absx > absy:
                     if diffx > 0:
-                        movement = 0
+                        movement = 0 # Right
                     else:
-                        movement = 2
+                        movement = 2 # Left
                 else:
                     if diffy < 0:
-                        movement = 3
+                        movement = 3 # Up
                     else:
-                        movement = 1
+                        movement = 1 # Down
+                # Condition checks if the 
                 if(abs(previous_movement - movement) == 2):
                     movement = previous_movement
         key = cv.waitKey(1)             #waiting for one millisecond for some input from the user
         
+        # Drawing reference messages and boundaries
         cv.line(frame,(80,0),(560,480),(0,0,0),5)
         cv.line(frame,(80,480),(560,0),(0,0,0),5)
         cv.putText(frame,'UP',(280,50), font, 1,(255,255,255),2,cv.LINE_AA)
@@ -212,22 +234,25 @@ while exit_condition:                        #comes out of the program when esca
         cv.putText(frame,'RIGHT',(420,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'LEFT',(100,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.imshow("Wireless Joystick!",frame)
+        # if game status = False then setting position to start emptying the body part from rectangles
         if game_status == False:
             position = [(start_pos_x,start_pos_y)]
-            rectangles = [head_rect]
+            snake_rectangles = [head_rect]
         for events in pygame.event.get():
             if(events.type == pygame.KEYDOWN):
                 if(events.key == pygame.K_ESCAPE):
                     key = 27
+        
+        # If Esc is pressed then run condition turns to False
         if(key == 27):
-            exit_condition = False
+            run_condition = False
         clock.tick(100)
     else:
         _, fram = cap.read()                #reading the camera
         frame = cv.flip(fram, 1) 
         cv.imshow("Wireless Joystick!",frame)
         screen.fill(screen_color)
-        pygame.draw.rect(screen, blue, rect_screen)
+        pygame.draw.rect(screen, Blue, rect_screen)
         score_rect = text_font.render(f'Score = {score}',True,'Green') 
         screen.blit(text_rect,(30,0))
         screen.blit(score_rect,(400,45))
@@ -246,7 +271,7 @@ while exit_condition:                        #comes out of the program when esca
                     after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',True,'Blue')
 
         if(key == 27):
-            exit_condition = False
+            run_condition = False
         elif key == 32:
             game_status = True
             score = 0
