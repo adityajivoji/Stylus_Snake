@@ -81,7 +81,6 @@ def create_blocks(count,intial_x,intial_y,x_in,y_in):
     tempblock_rectangles = [tempblock_rect]
     for i in range(count):
         tempblock_rectangles.append(blocks.get_rect(center = (tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)))))
-        print(tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)))
     return tempblock_rectangles
 block_rectangles = [create_blocks(29,107,87,14,0)]
 block_rectangles.append(create_blocks(29,107,673,14,0))
