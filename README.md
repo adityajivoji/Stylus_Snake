@@ -2,7 +2,6 @@
 
 Play the traditional Stylus Snake game with the help of any object as the stylus
 
-
 ## Methods
 
 * Using sprite class
@@ -98,5 +97,8 @@ this resets all the values to initial values
 
 * first method does not have as many function as the second which makes the first code run faster.
 * second method is structured and any changes can be made in the classes whereas the first method changes have to made in several places.
-
-
+* The hsv projection doesn't give well results as compared to alloting proper hsv values with hsv calculator and using hsv thresholding.
+* the previous versions use hsv thresholding if needed for reference
+* for using a manual hsv calculator click [here](https://github.com/adityajivoji/manual_hsv_calc.git)
+* The program uses opencv library for the input part. the capturing of the input takes a lot of time that is why the code may not work faster even if the f.p.s. is increased.
+* The current f.p.s. is 8.3 when game_status is False and
