@@ -6,19 +6,8 @@ import random
 
 from pygame.display import set_caption
 
-img = np.zeros((480, 640, 3), np.uint8) #creating an image which is the drawing space
-cv.bitwise_not(img,img)                 #turning all the zeros to 1s so that drawing pad is white(optional)
-cp = np.copy(img)                       #copying this image to clear the drawing canvas(optional)
+
 cap = cv.VideoCapture(0 + cv.CAP_DSHOW) #capturing video (+ cv.CAP_DSHOW is only used if using only 0 doesn't work)
-#these are the lower and upper limits of hsv values identified create a mask of stylus
-lh = 158
-ls = 101
-lv = 90
-uh = 179
-us = 255
-uv = 255
-lower_red = np.array([lh, ls, lv])      #creating the array for hsv thresholding
-upper_red = np.array([uh, us, uv])
 kernel = np.ones((3, 3), np.uint8)      #this is the kernel for passing while "closing" and dilation
 ncx = ncy=  2300000                     #assigning these value so that there is no condition check everytime for 1st and2nd iteration
 key = 0                                 #condition for entering into the loop
@@ -26,7 +15,6 @@ font = cv.FONT_HERSHEY_SIMPLEX
 
 # HSV backprojection
 enter_key = False
-show_key = False
 while key != 27:
     _,fram = cap.read()
     frame = cv.flip(fram,1)
@@ -333,7 +321,6 @@ while run_condition:                        #comes out of the program when escap
             score = 0
             score_rect = text_font.render(f'Score = {score}',True,'Green')
             after_text_rect = after_text.render('Press SpaceBar to Restart or ESC to exit',True,'Blue')
-
 
 #releasing the capture and destroying all the windows
 cap.release()
