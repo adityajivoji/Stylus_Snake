@@ -196,11 +196,11 @@ snake_group = pygame.sprite.GroupSingle()
 snake_group.add(snake)
 
 # Initializing all the writen text
-text_font = pygame.font.Font('comic.ttf',50)
+text_font = pygame.font.Font('font/comic.ttf',50)
 display_screen = pygame.Rect(0, 0, 600, 80)
-text_font_50 = pygame.font.Font('comic.ttf',50)
+text_font_50 = pygame.font.Font('font/comic.ttf',50)
 title = text_font_50.render('Snake Game',True,'Green')
-text_font_25 = pygame.font.Font('comic.ttf',25)
+text_font_25 = pygame.font.Font('font/comic.ttf',25)
 score_display = text_font_25.render(f'Score = {score}',True,'Green')
 restart_text = text_font_25.render('Press SpaceBar to start or ESC to exit',True,'Blue')
 
