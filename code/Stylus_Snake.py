@@ -196,7 +196,7 @@ while run_condition:                        #comes out of the program when escap
         cv.putText(frame,'DOWN',(280,400), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'RIGHT',(420,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'LEFT',(100,240), font, 1,(255,255,255),2,cv.LINE_AA)
-        cv.imshow("Wireless Joystick!",dilation_after_closing)
+        cv.imshow("Wireless Joystick!",frame)
 
         # screen
         screen.fill(screen_color)
