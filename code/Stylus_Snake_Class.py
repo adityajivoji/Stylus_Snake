@@ -227,8 +227,6 @@ create_Walls(3,43,450,87,0,14)
 
 # Setting game_status to False so that introductory window opens
 game_status = False
-# Initiating Screen and background
-background = pygame.image.load("grass.jpg").convert()
 
 # Colors
 Blue = (0,0, 255)
