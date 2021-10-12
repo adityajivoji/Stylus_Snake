@@ -2,7 +2,6 @@ import random
 import pygame
 import cv2 as cv
 import numpy as np
-from pygame.constants import K_DOWN, K_LEFT, K_UP, K_RIGHT
 from pygame.display import set_caption
 
 # Initial opencv declarations
