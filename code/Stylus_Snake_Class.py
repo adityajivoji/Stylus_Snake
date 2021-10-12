@@ -26,6 +26,33 @@ key = 0                                 #condition for entering into the loop
 font = cv.FONT_HERSHEY_SIMPLEX
 movement = 10
 
+# HSV backprojection
+enter_key = False
+show_key = False
+while key != 27:
+    _,fram = cap.read()
+    frame = cv.flip(fram,1)
+    x = np.copy(frame)
+    roi = frame[226:255,306:335]
+    cv.rectangle(frame,(302,222),(338,258),(0,255,0),3)
+    cv.imshow("frame",frame)
+    key = cv.waitKey(1)
+    if key == 32:
+        enter_key = True
+    if enter_key == True:
+        hsv = cv.cvtColor(roi,cv.COLOR_BGR2HSV)
+        hsvt = cv.cvtColor(x,cv.COLOR_BGR2HSV)
+        M = cv.calcHist([hsv],[0, 1], None, [180, 256], [0, 180, 0, 256] )
+        I = cv.calcHist([hsvt],[0, 1], None, [180, 256], [0, 180, 0, 256] )
+        R = M / I
+        key = 27
+
+# Code for Snake
+cap.release()
+cv.destroyAllWindows()
+
+cap = cv.VideoCapture(0 + cv.CAP_DSHOW) #capturing video (+ cv.CAP_DSHOW is only used if using only 0 doesn't work)
+
 # Snake Initial Declarations
 pygame.init()
 set_caption("Stylus Snake")
@@ -101,9 +128,10 @@ class Food(pygame.sprite.Sprite):
     
     def generate(self):
         self.rect.center = (random.randint(1,600),random.randint(80,600))
-        
         self.display_condition = True
         if pygame.sprite.spritecollide(food,walls_group,False) or pygame.sprite.spritecollide(food,body_group,False):
+            food.generate()
+        if pygame.sprite.spritecollide(food,body_group,False) or pygame.sprite.spritecollide(food,body_group,False):
             food.generate()
 
 class Walls(pygame.sprite.Sprite):
@@ -158,7 +186,6 @@ body_group = pygame.sprite.Group()
 # Creating group for Walls
 walls_group_list = [pygame.sprite.Group(),pygame.sprite.Group(),pygame.sprite.Group(),pygame.sprite.Group()]
 walls_group = walls_group_list[random.randint(0,3)]
-
 # Creating group for Food
 food = Food()
 food_group = pygame.sprite.GroupSingle()
@@ -199,10 +226,10 @@ create_Walls(2,43,150,87,0,14)
 create_Walls(3,43,7,520,14,0)
 create_Walls(3,43,450,87,0,14)
 
-
 # Setting game_status to False so that introductory window opens
 game_status = False
 # Initiating Screen and background
+background = pygame.image.load("grass.jpg").convert()
 
 # Colors
 Blue = (0,0, 255)
@@ -266,7 +293,15 @@ while run_condition:
         _, fram = cap.read()                #reading the camera
         frame = cv.flip(fram, 1)            #flipping the camera along the vertical axis
         hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)  #converting frame from bgr to hsv
-        mask = cv.inRange(hsv, lower_red, upper_red)    #hsv thresholding
+        h,s,v = cv.split(hsv)
+        B = R[h.ravel(),s.ravel()]
+        B = np.minimum(B,1)
+        B = B.reshape(hsvt.shape[:2])
+        disc = cv.getStructuringElement(cv.MORPH_ELLIPSE,(5,5))
+        cv.filter2D(B,-1,disc,B)
+        B = np.uint8(B)
+        cv.normalize(B,B,0,255,cv.NORM_MINMAX)
+        _,mask = cv.threshold(B,50,255,0) 
         #applying closing operation on mask to remove noise from the image
         closing = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel) 
         #dilation is done to remove some of the dark spot inside the mask
@@ -306,9 +341,7 @@ while run_condition:
         cv.imshow("Wireless Joystick",frame)
         
         key = cv.waitKey(1)
-        
-        
-        
+
         # If snake collides with its body
         if pygame.sprite.spritecollide(snake, body_group, False):
             game_status = False
