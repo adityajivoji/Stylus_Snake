@@ -43,7 +43,7 @@ class Snake(pygame.sprite.Sprite):
     movement = 10
     def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.image.load('3.jpg').convert()
+        self.image = pygame.image.load('images/head.jpg').convert()
         self.rect = self.image.get_rect()
         self.position = start_pos
         self.rect.center = self.position
@@ -86,7 +86,7 @@ class Body(pygame.sprite.Sprite):
     length = 0
     def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.image.load("2.jpg").convert()
+        self.image = pygame.image.load("images/body.jpg").convert()
         self.rect = self.image.get_rect()
         self.position = (13,13)
 
@@ -95,7 +95,7 @@ class Food(pygame.sprite.Sprite):
     display_condition = False
     def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.image.load('11.jpg').convert()
+        self.image = pygame.image.load('images/food.jpg').convert()
         self.rect = self.image.get_rect()
         self.display_condition = False
     
@@ -109,7 +109,7 @@ class Food(pygame.sprite.Sprite):
 class Walls(pygame.sprite.Sprite):
     def __init__(self,position_x,position_y) -> None:
         super().__init__()
-        self.image = pygame.image.load("1.jpg").convert()
+        self.image = pygame.image.load("images/wall.jpg").convert()
         self.rect = self.image.get_rect()
         self.position = (position_x,position_y)
         self.rect.center = self.position
@@ -203,7 +203,6 @@ create_Walls(3,43,450,87,0,14)
 # Setting game_status to False so that introductory window opens
 game_status = False
 # Initiating Screen and background
-background = pygame.image.load("grass.jpg").convert()
 
 # Colors
 Blue = (0,0, 255)

@@ -40,11 +40,11 @@ start_pos_x = 300
 start_pos_y = 390
 # getting screen loading images and getting rect
 screen = pygame.display.set_mode((screen_width,screen_height))
-head = pygame.image.load('3.jpg').convert_alpha()
+head = pygame.image.load('images/head.jpg').convert_alpha()
 head_rect = head.get_rect(center = (start_pos_x,start_pos_y))
-body = pygame.image.load('2.jpg').convert_alpha()
+body = pygame.image.load('images/body.jpg').convert_alpha()
 body_rect = body.get_rect(center = (335,240))
-food = pygame.image.load('11.jpg').convert_alpha()
+food = pygame.image.load('images/food.jpg').convert_alpha()
 food_rect = food.get_rect(center = (300,300))
 
 position = [(start_pos_x,start_pos_y)]
@@ -75,7 +75,7 @@ after_text_rect = after_text.render('Press SpaceBar to start or ESC to exit',Tru
 # Game status set to False turn True when spacebar is pressed
 game_status = False
 # Creating walls
-blocks = pygame.image.load('1.jpg').convert_alpha()
+blocks = pygame.image.load('images/wall.jpg').convert_alpha()
 def create_blocks(count,intial_x,intial_y,x_in,y_in):
     tempblock_rect = blocks.get_rect(center = (intial_x,intial_y))
     tempblock_rectangles = [tempblock_rect]
