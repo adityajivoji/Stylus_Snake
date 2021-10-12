@@ -145,18 +145,19 @@ def collision_food():
     food.display_condition = False        
 
 # Creating Walls
-def create_Walls(count,initial_x,initial_y,x_increament,y_increament):
+def create_Walls(position,count,initial_x,initial_y,x_increament,y_increament):
     for i in range(count):
         x = initial_x + (x_increament * i)
         y = initial_y + (y_increament * i)
-        walls_group.add(Walls(x,y))
+        walls_group_list[position].add(Walls(x,y))
 
 # Creating group for body parts
 first_body = Body()
 body_group = pygame.sprite.Group()
 
 # Creating group for Walls
-walls_group = pygame.sprite.Group()
+walls_group_list = [pygame.sprite.Group(),pygame.sprite.Group(),pygame.sprite.Group(),pygame.sprite.Group()]
+walls_group = walls_group_list[random.randint(0,3)]
 
 # Creating group for Food
 food = Food()
@@ -178,15 +179,25 @@ score_display = text_font_25.render(f'Score = {score}',True,'Green')
 restart_text = text_font_25.render('Press SpaceBar to start or ESC to exit',True,'Blue')
 
 # Creating Walls
-create_Walls(29,107,87,14,0)
-create_Walls(29,107,673,14,0)
-create_Walls(29,593,187,0,14)
-create_Walls(29,7,187,0,14)
-create_Walls(8,402,207,14,0)
-create_Walls(8,100,573,14,0)
-create_Walls(7,500,221,0,14)
-create_Walls(7,100,559,0,-14)
+create_Walls(0,29,107,87,14,0)
+create_Walls(0,29,107,673,14,0)
+create_Walls(0,29,593,187,0,14)
+create_Walls(0,29,7,187,0,14)
+create_Walls(0,8,402,207,14,0)
+create_Walls(0,8,100,573,14,0)
+create_Walls(0,7,500,221,0,14)
+create_Walls(0,7,100,559,0,-14)
 
+create_Walls(1,20,127,217,0,14)
+create_Walls(1,20,500,217,0,14)
+create_Walls(1,20,170,137,14,0)
+create_Walls(1,20,170,577,14,0)
+
+create_Walls(2,43,7,220,14,0)
+create_Walls(2,43,150,87,0,14)
+
+create_Walls(3,43,7,520,14,0)
+create_Walls(3,43,450,87,0,14)
 
 
 # Setting game_status to False so that introductory window opens
