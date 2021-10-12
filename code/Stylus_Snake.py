@@ -24,6 +24,33 @@ ncx = ncy=  2300000                     #assigning these value so that there is 
 key = 0                                 #condition for entering into the loop
 font = cv.FONT_HERSHEY_SIMPLEX
 
+# HSV backprojection
+enter_key = False
+show_key = False
+while key != 27:
+    _,fram = cap.read()
+    frame = cv.flip(fram,1)
+    x = np.copy(frame)
+    roi = frame[226:255,306:335]
+    cv.imshow("ROI",roi)
+    cv.rectangle(frame,(302,222),(338,258),(0,255,0),3)
+    cv.imshow("frame",frame)
+    key = cv.waitKey(1)
+    if key == 32:
+        enter_key = True
+    if enter_key == True:
+        hsv = cv.cvtColor(roi,cv.COLOR_BGR2HSV)
+        hsvt = cv.cvtColor(x,cv.COLOR_BGR2HSV)
+        M = cv.calcHist([hsv],[0, 1], None, [180, 256], [0, 180, 0, 256] )
+        I = cv.calcHist([hsvt],[0, 1], None, [180, 256], [0, 180, 0, 256] )
+        R = M / I
+        key = 27
+        
+# Code for Snake
+cap.release()
+cv.destroyAllWindows()
+
+cap = cv.VideoCapture(0 + cv.CAP_DSHOW) #capturing video (+ cv.CAP_DSHOW is only used if using only 0 doesn't work)
 
 # Code for Snake
 
@@ -81,7 +108,8 @@ def create_blocks(count,intial_x,intial_y,x_in,y_in):
     tempblock_rectangles = [tempblock_rect]
     for i in range(count):
         tempblock_rectangles.append(blocks.get_rect(center = (tempblock_rect.x + 7 + (x_in * (i + 1)),tempblock_rect.y + 7 + (y_in * (i + 1)))))
-    return tempblock_rectangles  
+    return tempblock_rectangles
+
 block_rectangles1 = [create_blocks(29,107,87,14,0)] # Create first block set
 block_rectangles1.append(create_blocks(29,107,673,14,0)) # append to the block set
 block_rectangles1.append(create_blocks(29,593,187,0,14))
@@ -105,7 +133,6 @@ block_rectangles4.append(create_blocks(42,450,87,0,14))
 
 maze_list = [block_rectangles1,block_rectangles2,block_rectangles3,block_rectangles4]
 maze = maze_list[random.randint(0,3)]
-
 # Screen Colors
 screen_color = (255,255,255)
 Blue = (0,0,255)
@@ -117,7 +144,15 @@ while run_condition:                        #comes out of the program when escap
         _, fram = cap.read()                #reading the camera
         frame = cv.flip(fram, 1)            #flipping the camera along the vertical axis
         hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)  #converting frame from bgr to hsv
-        mask = cv.inRange(hsv, lower_red, upper_red)    #hsv thresholding
+        h,s,v = cv.split(hsv)
+        B = R[h.ravel(),s.ravel()]
+        B = np.minimum(B,1)
+        B = B.reshape(hsvt.shape[:2])
+        disc = cv.getStructuringElement(cv.MORPH_ELLIPSE,(5,5))
+        cv.filter2D(B,-1,disc,B)
+        B = np.uint8(B)
+        cv.normalize(B,B,0,255,cv.NORM_MINMAX)
+        _,mask = cv.threshold(B,50,255,0) 
         #applying closing operation on mask to remove noise from the image
         closing = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel) 
         #dilation is done to remove some of the dark spot inside the mask
@@ -127,6 +162,7 @@ while run_condition:                        #comes out of the program when escap
             areas = [cv.contourArea(c) for c in contours]   #finding areas of all the contourand putting them in a list
             #finding the index of the largest contour in the above list
             cnt=contours[np.argmax(areas)]
+            cv.drawContours(dilation_after_closing, [cnt] , 0, (0,255,0), 3)
             #using the contour with larget area to draw it on the original frame
             M = cv.moments(cnt)                             #finding moments and centroid of the largest contour
             cx = int(M['m10']/M['m00'])
@@ -160,7 +196,7 @@ while run_condition:                        #comes out of the program when escap
         cv.putText(frame,'DOWN',(280,400), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'RIGHT',(420,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'LEFT',(100,240), font, 1,(255,255,255),2,cv.LINE_AA)
-        cv.imshow("Wireless Joystick!",frame)
+        cv.imshow("Wireless Joystick!",dilation_after_closing)
 
         # screen
         screen.fill(screen_color)
