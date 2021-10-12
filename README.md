@@ -13,92 +13,92 @@ Play the traditional Stylus Snake game with the help of any object as the stylus
 * Finding contour from the obtained mask
 * Get the centoid value
 * the camera is divided into four triangles
-* if the triangle is in upper, lower, right, left triangle then snake moves upwards, downwards, rightwards, leftwards.
+* If the triangle is in upper, lower, right, left triangle then snake moves upwards, downwards, rightwards, leftwards respectively
 
 
 ### Without using sprite class
 
-* initalize and load requiered for the game to run
-* creating walls
-* reading the centroid
+* Initalize and load requiered for the game to run
+* Creating walls
+* Reading the centroid
 * Filling the screen with white color
 * Adding title and score-board
-* position is an array that stores positions of every part of the snake. If the snake has a body then it every part gets the position of its leading the element
-* depending in the direction the snake goes the program checks if it crosses the maze boundaries and brings it back to the start point of the other side
-* display the snake and check if the food generate collides with the snake body
-* displaying the walls, also checking if food isn't on the walls
-* displaying food until either snake eats or the chasing time is over
-* cheking if the snake eat the food 
-    * increasing the body length by 1
-    * setting the display condition for food as False
-    * increasing the time it will spawn the next food
-    * increasing the score
-    * updating the score
-* generate food it counter = condition for generation
-* checking if the head collided with any body part after the third part
-* if the game_status turns False due to:
-    * the collision of snake's head with the walls
-    * the collision of snake's head with the body
-this resets all the values to initial values
+* Position is an array that stores positions of every part of the snake. If the snake has a body then it every part gets the position of its leading the element
+* Depending in the direction the snake goes the program checks if it crosses the maze boundaries and brings it back to the start point of the other side
+* Display the snake and check if the food generate collides with the snake body
+* Displaying the walls, also checking if food isn't on the walls
+* Displaying food until either snake eats or the chasing time is over
+* Cheking if the snake eat the food 
+    * Increasing the body length by 1
+    * Setting the display condition for food as False
+    * Increasing the time it will spawn the next food
+    * Increasing the score
+    * Updating the score
+* Generate food it counter = condition for generation
+* Checking if the head collided with any body part after the third part
+* If the game_status turns False due to:
+    * The collision of snake's head with the walls
+    * The collision of snake's head with the body
+This resets all the values to initial values
 * If the game_status is False
-    * the score gained is displayed with instruction
-        * if the user pressed Esc the program exits
-        * if the user pressed spacebar then the game restarts
+    * The score gained is displayed with instruction
+        * If the user pressed Esc the program exits
+        * If the user pressed spacebar then the game restarts
 
 ### Using sprite class
 
 * Creating Classes
-    * snake head
-        * includes the image rectangle
-        * position
-        * direction in which the snake moves. Initially set to 10 so that no movement takes place until stylus is detected
-        * array with functions needed to change position and check if it the head crosses the boundaries
-        * get_direction : a method to get the direction and change the position of the snake
-        * zero, one, two, three are methods that change move the snake to new position
+    * Snake head
+        * Includes the image rectangle
+        * Position
+        * Direction in which the snake moves. Initially set to 10 so that no movement takes place until stylus is detected
+        * Array with functions needed to change position and check if it the head crosses the boundaries
+        * Get_direction : a method to get the direction and change the position of the snake
+        * Zero, one, two, three are methods that change move the snake to new position
     * Body
-        * includes the image rectangle
-        * position of individual part initially set to 13, 13(just randomly)
+        * Includes the image rectangle
+        * Position of individual part initially set to 13, 13(just randomly)
     * Food
-        * image rectangle
-        * display condition
-        * method generate: generates random position, sets display_condition to True
-        * the generate function is called again if food lands on walls or body of the snake
+        * Image rectangle
+        * Display condition
+        * Method generate: generates random position, sets display_condition to True
+        * The generate function is called again if food lands on walls or body of the snake
     * walls
-        * includes the image rectangle
-        * position for individual walls
+        * Includes the image rectangle
+        * Position for individual walls
 
-* function update_body : used to update position of every part to its leading part and first body part to the snakes position
-* function collision food: used to increase length of body after it eats the food
-* function create_walls create a line of walls given input as the number of walls in row, first block position (initial_x,initial_y) and the increament to this position for next block
+* Function update_body : used to update position of every part to its leading part and first body part to the snakes position
+* Function collision food: used to increase length of body after it eats the food
+* Function create_walls create a line of walls given input as the number of walls in row, first block position (initial_x,initial_y) and the increament to this position for next block
 
-* initialising all the varialbles requiered
-* creating walls
-* initializing time
-* while game_stauts is true
-    * fill screen, diplay game name, score and the walls 
-    * finding the collision between the snake head and food
-    * updating the body
-    * getting snake direction and new position
-    * showing snake body and head
-    * finding collision between the snake and walls and snake and its body
-    * using hsv backprojection to find the centroid of the stylus
-    * drawing reference on the live video
-    * game_status turns False when snake head collides with the body or when it collides with the wall
-    * when pressed Esc the game is exited
-* while game_status is False
-    * frame window shows the live video
-    * score gained is displayed
-    * instrustion to restart the game or to exit is shown
-    * press spacebar to restart and Esc to exit
-    * all the values are reset when spacebar is pressed
-    * it works for both when the current working window is the live feed or the game
+* Initialising all the varialbles requiered
+* Creating walls
+* Initializing time
+* While game_stauts is true
+    * Fill screen, diplay game name, score and the walls 
+    * Finding the collision between the snake head and food
+    * Updating the body
+    * Getting snake direction and new position
+    * Showing snake body and head
+    * Finding collision between the snake and walls and snake and its body
+    * Using hsv backprojection to find the centroid of the stylus
+    * Drawing reference on the live video
+    * Game_status turns False when snake head collides with the body or when it collides with the wall
+    * When pressed Esc the game is exited
+* While game_status is False
+    * Frame window shows the live video
+    * Score gained is displayed
+    * Instrustion to restart the game or to exit is shown
+    * Press spacebar to restart and Esc to exit
+    * All the values are reset when spacebar is pressed
+    * It works for both when the current working window is the live feed or the game
 
 ## Notes
 
-* first method does not have as many function as the second which makes the first code run faster.
-* second method is structured and any changes can be made in the classes whereas the first method changes have to made in several places.
+* First method does not have as many function as the second which makes the first code run faster.
+* Second method is structured and any changes can be made in the classes whereas the first method changes have to made in several places.
 * The hsv projection doesn't give well results as compared to alloting proper hsv values with hsv calculator and using hsv thresholding.
-* the previous versions use hsv thresholding if needed for reference
-* for using a manual hsv calculator click [here](https://github.com/adityajivoji/manual_hsv_calc.git)
+* The previous versions use hsv thresholding if needed for reference
+* For using a manual hsv calculator click [here](https://github.com/adityajivoji/manual_hsv_calc.git)
 * The program uses opencv library for the input part. the capturing of the input takes a lot of time that is why the code may not work faster even if the f.p.s. is increased.
-* The current f.p.s. is 8.3 when game_status is False and
+* The current f.p.s. is 8.3 when game_status is False and about the same when game_status is OFF this implies that the fps is dominated by the presence of code derived from opencv
