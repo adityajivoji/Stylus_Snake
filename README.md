@@ -96,6 +96,7 @@ This resets all the values to initial values
 ## Notes
 
 * First method does not have as many function as the second which makes the first code run faster.
+* First method uses less lines of code.
 * Second method is structured and any changes can be made in the classes whereas the first method changes have to made in several places.
 * The hsv projection doesn't give well results as compared to alloting proper hsv values with hsv calculator and using hsv thresholding.
 * The previous versions use hsv thresholding if needed for reference
