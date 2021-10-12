@@ -34,7 +34,7 @@ while key != 27:
     x = np.copy(frame)
     roi = frame[226:255,306:335]
     cv.rectangle(frame,(302,222),(338,258),(0,255,0),3)
-    cv.putText(frame,'Let the rectangle cover be inside the object, then press SpaceBar',(50,450), font, 0.5,(255,255,255),2,cv.LINE_AA)
+    cv.putText(frame,'Let the rectangle be inside the object, then press SpaceBar',(50,450), font, 0.5,(255,255,255),2,cv.LINE_AA)
     cv.imshow("frame",frame)
     key = cv.waitKey(1)
     if key == 32:
