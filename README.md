@@ -4,8 +4,8 @@ Play the traditional Stylus Snake game with the help of any object as the stylus
 
 ## Methods
 
-* Using sprite class
-* Without using sprite class
+* Using sprite class and hsv backprojection with opencv
+* Without using sprite class and hsv backprojection with opencv
 
 ### Basic to Both the methods
 
