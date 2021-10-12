@@ -6,19 +6,7 @@ from pygame.display import set_caption
 
 # Initial opencv declarations
 
-img = np.zeros((480, 640, 3), np.uint8) #creating an image which is the drawing space
-cv.bitwise_not(img,img)                 #turning all the zeros to 1s so that drawing pad is white(optional)
-cp = np.copy(img)                       #copying this image to clear the drawing canvas(optional)
 cap = cv.VideoCapture(0 + cv.CAP_DSHOW) #capturing video (+ cv.CAP_DSHOW is only used if using only 0 doesn't work)
-#these are the lower and upper limits of hsv values identified create a mask of stylus
-lh = 158
-ls = 101
-lv = 90
-uh = 179
-us = 255
-uv = 255
-lower_red = np.array([lh, ls, lv])      #creating the array for hsv thresholding
-upper_red = np.array([uh, us, uv])
 kernel = np.ones((3, 3), np.uint8)      #this is the kernel for passing while "closing" and dilation
 ncx = ncy=  2300000                     #assigning these value so that there is no condition check everytime for 1st and2nd iteration
 key = 0                                 #condition for entering into the loop
@@ -242,51 +230,6 @@ run_condition = True
 
 while run_condition:
     if game_status == True:
-        # Filling screen with white color drawing walls and pasting information
-        screen.fill(white)
-        walls_group.draw(screen)
-        pygame.draw.rect(screen,Blue,display_screen)
-        screen.blit(title,(30,0))
-        screen.blit(score_display,(400,45))
-
-        #food_group.update()
-        curr_time = int(pygame.time.get_ticks() / 1000)
-
-        # If food is present the check for collision and set time to generate new food
-        # If there is no food generate after Food.variable seconds later
-        if food.display_condition == True:
-            if snake.rect.colliderect(food.rect):
-                start_time = curr_time
-                score += 1
-                score_display = text_font_25.render(f'Score = {score}',True,'Green')
-                Food.variable = random.randint(5,10)
-                collision_food()
-            elif curr_time - start_time > time_to_chase:
-                food.display_condition = False
-                Food.variable = random.randint(5,10)
-                time_to_chase = random.randint(17,25)
-                start_time  = curr_time
-        else:
-            if curr_time - start_time > Food.variable:
-                start_time = curr_time
-                food.generate()
-
-        # Drawing body if length is greater than 1
-        if Body.length > 0:
-            update_body()
-            body_group.draw(screen)
-        if food.display_condition == True:
-            food_group.draw(screen)
-        
-        # After the body is updated Snake position can be changed
-        snake.get_direction()
-        
-        # Drawing Snake and updating screen
-        snake_group.draw(screen)
-        pygame.display.flip()
-        pygame.display.update()
-
-        # Opencv code for getting movement
 
         _, fram = cap.read()                #reading the camera
         frame = cv.flip(fram, 1)            #flipping the camera along the vertical axis
@@ -337,6 +280,54 @@ while run_condition:
         cv.putText(frame,'RIGHT',(420,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.putText(frame,'LEFT',(100,240), font, 1,(255,255,255),2,cv.LINE_AA)
         cv.imshow("Wireless Joystick",frame)
+        
+        # Filling screen with white color drawing walls and pasting information
+        screen.fill(white)
+        walls_group.draw(screen)
+        pygame.draw.rect(screen,Blue,display_screen)
+        screen.blit(title,(30,0))
+        screen.blit(score_display,(400,45))
+
+        #food_group.update()
+        curr_time = int(pygame.time.get_ticks() / 1000)
+
+        # If food is present the check for collision and set time to generate new food
+        # If there is no food generate after Food.variable seconds later
+        if food.display_condition == True:
+            if snake.rect.colliderect(food.rect):
+                start_time = curr_time
+                score += 1
+                score_display = text_font_25.render(f'Score = {score}',True,'Green')
+                Food.variable = random.randint(5,10)
+                collision_food()
+            elif curr_time - start_time > time_to_chase:
+                food.display_condition = False
+                Food.variable = random.randint(5,10)
+                time_to_chase = random.randint(17,25)
+                start_time  = curr_time
+        else:
+            if curr_time - start_time > Food.variable:
+                start_time = curr_time
+                food.generate()
+
+        # Drawing body if length is greater than 1
+        if Body.length > 0:
+            update_body()
+            body_group.draw(screen)
+        if food.display_condition == True:
+            food_group.draw(screen)
+        
+        # After the body is updated Snake position can be changed
+        snake.get_direction()
+        
+        # Drawing Snake and updating screen
+        snake_group.draw(screen)
+        pygame.display.flip()
+        pygame.display.update()
+
+        # Opencv code for getting movement
+
+        
         
         key = cv.waitKey(1)
 
