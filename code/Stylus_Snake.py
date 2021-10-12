@@ -91,10 +91,10 @@ run_condition = True
 grab_time = random.randint(150, 400)
 # these are initiated to display information
 rect_screen = pygame.Rect(0, 0, 600, 80)
-text_font = pygame.font.Font('comic.ttf',50)
+text_font = pygame.font.Font('font/comic.ttf',50)
 text_rect = text_font.render('Snake Game',True,'Green')
-text_font = pygame.font.Font('comic.ttf',25)
-after_text = pygame.font.Font('comic.ttf',25)
+text_font = pygame.font.Font('font/comic.ttf',25)
+after_text = pygame.font.Font('font/comic.ttf',25)
 # Score set to Zero
 score = 0
 score_rect = text_font.render(f'Score = {score}',True,'Green')
