@@ -10,6 +10,7 @@ Play the traditional Stylus Snake game with the help of any object as the stylus
 ### Basic to Both the methods
 
 * Use hsv backprojection to detect the object using numpy method
+![gif2](https://user-images.githubusercontent.com/89838921/137094327-6bbdd862-ea0b-4c6c-aba7-7696680ef855.gif)
 * Finding contour from the obtained mask
 * Get the centoid value
 * the camera is divided into four triangles
@@ -92,6 +93,8 @@ This resets all the values to initial values
     * Press spacebar to restart and Esc to exit
     * All the values are reset when spacebar is pressed
     * It works for both when the current working window is the live feed or the game
+![gif1](https://user-images.githubusercontent.com/89838921/137094392-741e3c47-21d8-4ee9-aee4-a4afba16c8d5.gif)
+
 
 ## Notes
 
