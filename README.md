@@ -103,3 +103,4 @@ This resets all the values to initial values
 * For using a manual hsv calculator click [here](https://github.com/adityajivoji/manual_hsv_calc.git)
 * The program uses opencv library for the input part. the capturing of the input takes a lot of time that is why the code may not work faster even if the f.p.s. is increased.
 * The current f.p.s. is 8.3 when game_status is False and about the same when game_status is OFF this implies that the fps is dominated by the presence of code derived from opencv
+* To see the demonstration video click [here](https://drive.google.com/file/d/1GwnIi-47w7L3I-1EI8BxMegR9pHr7Iy7/view?usp=sharing)
