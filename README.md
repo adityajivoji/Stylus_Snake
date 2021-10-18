@@ -5,6 +5,7 @@ Play the traditional Stylus Snake game with the help of any object as the stylus
 ## Libraries used
 * opencv
 * numpy
+* pygame
 
 ## Methods
 
