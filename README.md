@@ -107,8 +107,7 @@ This resets all the values to initial values
 * First method does not have as many function as the second which makes the first code run faster.
 * First method uses less lines of code.
 * Second method is structured and any changes can be made in the classes whereas the first method changes have to made in several places.
-* The hsv projection doesn't give well results as compared to alloting proper hsv values with hsv calculator and using hsv thresholding.
-* The previous versions use hsv thresholding if needed for reference
+* The hsv projection doesn't give great results as compared to alloting proper hsv values with hsv calculator and using hsv thresholding.
 * For using a manual hsv calculator click [here](https://github.com/adityajivoji/manual_hsv_calc.git)
 * The program uses opencv library for the input part. the capturing of the input takes a lot of time that is why the code may not work faster even if the f.p.s. is increased.
 * The current f.p.s. is 8.3 when game_status is False and about the same when game_status is OFF this implies that the fps is dominated by the presence of code derived from opencv
