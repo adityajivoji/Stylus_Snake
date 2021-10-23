@@ -365,11 +365,9 @@ while run_condition:
         screen.fill(white)
         pygame.draw.rect(screen,Blue,display_screen)
         screen.blit(title,(30,0))
-        
         screen.blit(score_display,(400,45))
         screen.blit(restart_text,(50,300))
-        pygame.display.flip()
-        pygame.display.update()
+        
 
         key = cv.waitKey(1)
         if key == 27:
@@ -387,8 +385,14 @@ while run_condition:
             game_status = True
             score = 0
             Body.length = 0
-            score_rect = text_font.render(f'Score = {score}',True,'Green')
+            score_display = text_font_25.render(f'Score = {score}',True,'Green')
             restart_text = text_font_25.render('Press SpaceBar to start or ESC to exit',True,'Blue')
+            screen.fill(white)
+            pygame.draw.rect(screen,Blue,display_screen)
+            screen.blit(title,(30,0))
+            screen.blit(score_display,(400,45))
+            screen.blit(restart_text,(50,300))
+            
         for events in pygame.event.get():
             if events.type == pygame.QUIT:
                     pygame.quit()
@@ -407,8 +411,16 @@ while run_condition:
                     game_status = True
                     score = 0
                     Food.variable = random.randint(7,12)
-                    score_rect = text_font.render(f'Score = {score}',True,'Green')
+                    score_display = text_font_25.render(f'Score = {score}',True,'Green')
                     restart_text = text_font_25.render('Press SpaceBar to start or ESC to exit',True,'Blue')
+                    screen.fill(white)
+                    pygame.draw.rect(screen,Blue,display_screen)
+                    screen.blit(title,(30,0))
+                    screen.blit(score_display,(400,45))
+                    screen.blit(restart_text,(50,300))
+        pygame.display.flip()
+        pygame.display.update()
+                    
 
 # Releasing the camera
 cap.release()
