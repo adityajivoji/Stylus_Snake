@@ -347,7 +347,7 @@ while run_condition:
             run_condition = False
 
         # Frame rate
-        clock.tick(10)
+        clock.tick(13)
 
         for events in pygame.event.get():
             if events.type == pygame.QUIT:
