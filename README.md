@@ -8,6 +8,10 @@ Play the traditional Stylus Snake game with the help of any object as the stylus
 * pygame
 * random
 
+# Resources
+* ![opencv tutorials](https://docs.opencv.org/4.5.2/d6/d00/tutorial_py_root.html)
+* ![pygame documentation](https://www.pygame.org/docs/)
+
 ## Methods
 
 * Using sprite class and hsv backprojection with opencv
