@@ -8,10 +8,6 @@ Play the traditional Stylus Snake game with the help of any object as the stylus
 * pygame
 * random
 
-# Resources
-* [opencv tutorials](https://docs.opencv.org/4.5.2/d6/d00/tutorial_py_root.html)
-* [pygame documentation](https://www.pygame.org/docs/)
-
 ## Methods
 
 * Using sprite class and hsv backprojection with opencv
@@ -116,3 +112,7 @@ This resets all the values to initial values
 * The program uses opencv library for the input part. the capturing of the input takes a lot of time that is why the code may not work faster even if the f.p.s. is increased.
 * The current f.p.s. is 8.3 when game_status is False and about the same when game_status is OFF this implies that the fps is dominated by the presence of code derived from opencv
 * To see the demonstration video click [here](https://drive.google.com/file/d/1nCrvaIU630CwWT4bjs9g17-60CQr-s-b/view?usp=sharing)
+
+# Resources
+* [opencv tutorials](https://docs.opencv.org/4.5.2/d6/d00/tutorial_py_root.html)
+* [pygame documentation](https://www.pygame.org/docs/)
